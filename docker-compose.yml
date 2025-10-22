@@ -1,0 +1,61 @@
+services:
+  mysql:
+    build: .
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: home_clothing_tester
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+
+    ports:
+      - "3307:3306"
+
+  backend:
+    build:
+      context: ./apps/backend-api
+      dockerfile: Dockerfile
+    container_name: backend-api
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/home_clothing_tester?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  streamlit:
+    build:
+      context: ./apps/streamlit
+      dockerfile: Dockerfile
+    container_name: streamlit
+    depends_on:
+      - mysql
+    ports:
+      - "8501:8501"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: home_clothing_tester
+      DB_USER: root
+      DB_PASS: ""
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ""
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

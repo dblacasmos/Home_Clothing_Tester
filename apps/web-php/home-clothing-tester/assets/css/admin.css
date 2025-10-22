@@ -1,0 +1,266 @@
+/* Estrellas Calificación Prendas */
+.star-rating {
+    display: inline-block;
+    font-size: 1.4em;
+    position: relative;
+    unicode-bidi: bidi-override;
+    color: lightgray;
+    line-height: 1;
+}
+
+.star-rating::before {
+    content: "★★★★★";
+    letter-spacing: 1px;
+}
+
+.star-rating::after {
+    content: "★★★★★";
+    letter-spacing: 1px;
+    color: gold;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--rating) !important;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Estados ACTIVO-INACTIVO-BLOQUEADO */
+.botones-estado {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.botones-estado form {
+    margin: 0;
+    padding: 0;
+}
+
+.botones-estado button {
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    transition: transform 0.2s ease;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.botones-estado button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.2);
+}
+
+.boton-activo {
+    color: white;
+    background-color: green;
+}
+
+.boton-inactivo {
+    color: white;
+    background-color: gray;
+}
+
+.boton-bloqueado {
+    color: white;
+    background-color: red;
+}
+
+.botones-estado button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.estado-texto {
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.estado-activo {
+    color: green;
+}
+
+.estado-inactivo {
+    color: gray;
+}
+
+.estado-bloqueado {
+    color: red;
+}
+
+/* Tablas y Elementos de Consultas */
+table {
+    width: 90%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    background-color: #111;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #f0f0f0;
+}
+
+thead {
+    background-color: #ff9800;
+    color: #000;
+}
+
+thead th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+tbody tr:hover {
+    background-color: #222;
+}
+
+td {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+}
+
+td img {
+    max-width: 60px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+}
+
+/* Formulario Gasto Total por Usuario */
+.container-gasto {
+    width: 50%;
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 25px 30px;
+    background-color: #111;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(255, 136, 0, 0.4);
+    position: relative;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.container-gasto::before {
+    content: "";
+    background-image: url('../assets/images/fondo-gasto.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center right;
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container-gasto h2 {
+    text-align: center;
+    color: #ffa500;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.gasto-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Formulario Interno */
+.formulario-consulta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.formulario-consulta label {
+    font-weight: bold;
+    color: #ffa500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.formulario-consulta input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #555;
+    background-color: #222;
+    color: #fff;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.formulario-consulta button {
+    background-color: #e67e22;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.formulario-consulta button:hover {
+    background-color: #dce006;
+}
+
+.resultado-gasto {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    color: #2ecc71;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Imágenes Decorativas del Formulario <- y -> */
+.gasto-img {
+    width: 25%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: auto;
+    pointer-events: none;
+}
+
+.gasto-img-left {
+    border-right: 3px solid #111;
+}
+
+.gasto-img-right {
+    border-left: 3px solid #111;
+}

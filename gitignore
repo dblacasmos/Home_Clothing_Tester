@@ -1,0 +1,62 @@
+# --- SO / generales ---
+.DS_Store
+Thumbs.db
+
+# --- IDEs ---
+.idea/
+*.iml
+.vscode/
+
+# --- Java / Maven ---
+target/
+*.class
+*.log
+hs_err_pid*
+.mvn/wrapper/maven-wrapper.jar
+
+# --- Spring Boot: ejemplo de config sin secretos ---
+# No subas application.yml si tiene credenciales
+src/main/resources/application.yml
+!src/main/resources/application-example.yml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Streamlit secrets (usa un example)
+apps/streamlit/.streamlit/secrets.toml
+!apps/streamlit/.streamlit/secrets.example.toml
+
+# --- PHP / Composer ---
+vendor/
+composer.lock
+
+# Config con credenciales (sube un example)
+web-php/home-clothing-tester/config/conexion.php
+!web-php/home-clothing-tester/config/conexion.example.php
+
+# --- Docker / entorno ---
+.env
+.env.*
+docker-data/
+**/tmp/
+**/*.pid
+
+# --- Logs / dumps ---
+*.log
+*.swap
+*.tmp
+*.bak
+*.old
+*.sql.gz

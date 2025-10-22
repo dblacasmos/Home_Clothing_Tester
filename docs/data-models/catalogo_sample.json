@@ -1,0 +1,16 @@
+{
+  "catalogo": [
+    {
+      "id": 1,
+      "nombre": "Basic Tee",
+      "descripcion": "Camiseta 100% algodón",
+      "precio": 14.95,
+      "talla": "M",
+      "color": "Blanco",
+      "stock": 99,
+      "estado": "DISPONIBLE",
+      "categoria": "T-Shirts",
+      "creado_por": "Javier"
+    }
+  ]
+}

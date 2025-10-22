@@ -1,0 +1,405 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Personalizar autocompletados del navegador */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #e68b02 inset;
+  -webkit-text-fill-color: black;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ERRORES */
+.error {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* CUERPO */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding-top: 70px;
+  padding-bottom: 50px;
+}
+
+body::before {
+  content: "";
+  background: url('../images/layout/Fondo.png') no-repeat center center;
+  background-size: cover;
+  opacity: 0.8;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: url('../images/layout/Header.png') no-repeat center center;
+  background-size: cover;
+  z-index: 3000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  padding-left: 0;
+}
+
+/* Animaciones Header */
+.title-wrapper {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.text-border,
+.text-fill {
+  font-family: 'Segoe UI Black', 'Segoe UI', sans-serif;
+  font-weight: bold;
+  font-size: 2.5rem;
+  letter-spacing: 0.2em;
+  transform: translate(-50%, -50%) scaleX(1.3);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  opacity: 0;
+  animation: meetCenter 1s ease forwards;
+  animation-delay: 1s;
+}
+
+.text-border {
+  animation-name: fromLeft;
+  color: red;
+  text-shadow:
+    -2px -2px 0 red,
+    2px -2px 0 red,
+    -2px 2px 0 red,
+    2px 2px 0 red;
+  z-index: 1;
+}
+
+.text-fill {
+  background: linear-gradient(to top right, #FFD580, #FF8C00, #000000);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  z-index: 2;
+  animation-name: fromRight;
+}
+
+@keyframes fromLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-150%, -50%) scaleX(1.3);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scaleX(1.3);
+  }
+}
+
+@keyframes fromRight {
+  0% {
+    opacity: 0;
+    transform: translate(50%, -50%) scaleX(1.3);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scaleX(1.3);
+  }
+}
+
+/* Header Icon del Menu Slidebar */
+.menu-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 70px;
+  width: 70px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+#toggleIcon {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Usuario con correo conectado */
+.user-email {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(252, 248, 2);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Nav común a nav.php, nav_user.php y nav_admin.php */
+.nav-bar {
+  background-color: #090909;
+  color: #e68b02;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-bar ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.nav-bar ul li a {
+  color: rgb(240, 106, 4);
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+.nav-bar ul li a:hover {
+  background-color: #dedb07;
+  border-radius: 4px;
+}
+
+/* Desplegable Menu */
+.sidebar-menu {
+  position: absolute;
+  top: 70px;
+  left: -250px;
+  width: 250px;
+  background-color: #222;
+  color: rgb(199, 83, 6);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 2px 0 5px rgba(239, 2, 2, 0.5);
+  transition: left 0.3s ease;
+  z-index: 2000;
+  height: auto;
+  max-height: 90vh;
+}
+
+.sidebar-menu.active {
+  left: 0;
+}
+
+.sidebar-menu nav ul {
+  flex-direction: column;
+  gap: 0;
+}
+
+.sidebar-menu nav ul li {
+  padding: 0.5rem 0.5rem;
+  border-bottom: 0.7px solid #954d06;
+}
+
+.sidebar-menu nav ul li a {
+  display: block;
+}
+
+/* LOGIN - Formulario */
+#loginForm {
+  position: absolute;
+  top: 100px;
+  left: 250px;
+  width: 300px;
+  background-color: #111;
+  color: white;
+  padding: 1rem;
+  border: 1px solid #ff9800;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+#loginForm .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #444;
+}
+
+#loginForm .close-btn:hover {
+  color: red;
+}
+
+#loginForm.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* LOGIN-Formulario-hidden */
+.login-form-hidden {
+  position: relative;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  background-color: #050505;
+  border: 1px solid #ed6008;
+  width: 300px;
+  margin: 1rem auto;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(246, 111, 1, 0.1);
+  border-radius: 8px;
+}
+
+.login-form-hidden h3 {
+  margin: 0;
+  padding: 0.5rem 0 0.5rem 0;
+  color: #ff9800;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.login-form-hidden.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ELEMENTOS FORMULARIO */
+form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: rgb(224, 91, 20);
+}
+
+form input[type="email"],
+form input[type="password"] {
+  background-color: #e68b02;
+  padding: 0.5rem;
+  border: 1px solid #e87c02;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #ff3300;
+  color: rgb(6, 6, 6);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 30%;
+}
+
+form button:hover {
+  background-color: #903609;
+}
+
+/* PRINCIPAL */
+.main-horizontal {
+  display: flex;
+  gap: 10rem;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+main h1,
+h2 {
+  text-align: center;
+  color: black;
+  letter-spacing: 0.2rem;
+  margin: 0.5rem auto 0.5rem auto;
+  font-size: 2rem;
+  width: fit-content;
+  position: relative;
+  text-shadow: 1px 1px 2px rgba(230, 238, 9, 0.948);
+  padding-bottom: 0.5rem;
+}
+
+main h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(to right, #ff9800, #ff4500);
+  border-radius: 2px;
+}
+
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: #000;
+  display: flex;
+  text-align: center;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.footer-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-content span {
+  display: inline-block;
+  color: orange;
+  font-weight: bold;
+  font-size: 1rem;
+  padding-right: 200px;
+}
+
+/* Animación marquee continuo */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pausar marquee al pasar cursor */
+.footer-marquee:hover .marquee-content {
+  animation-play-state: paused;
+}

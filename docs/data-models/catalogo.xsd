@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- Elemento raíz que representa el catálogo completo -->
+    <xs:element name="Catalogo">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Elemento prenda: puede repetirse múltiples veces -->
+                <xs:element name="Prenda" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- Identificador único de la prenda -->
+                            <xs:element name="ID" type="xs:int"/>
+                            <!-- Nombre de la prenda -->
+                            <xs:element name="Nombre" type="xs:string"/>
+                            <!-- Descripción breve de la prenda -->
+                            <xs:element name="Descripcion" type="xs:string"/>
+                            <!-- Precio unitario de la prenda -->
+                            <xs:element name="Precio" type="xs:decimal"/>
+                            <!-- Talla (opcional) -->
+                            <xs:element name="Talla" type="xs:string" minOccurs="0"/>
+                            <!-- Color (opcional) -->
+                            <xs:element name="Color" type="xs:string" minOccurs="0"/>
+                            <!-- Unidades disponibles en stock -->
+                            <xs:element name="StockDisponible" type="xs:int"/>
+                            <!-- Estado de disponibilidad de la prenda -->
+                            <xs:element name="Estado" type="EstadoPrenda"/>
+                            <!-- Nombre de la categoría a la que pertenece -->
+                            <xs:element name="Categoria" type="xs:string"/>
+                            <!-- Nombre del administrador que la creó -->
+                            <xs:element name="CreadoPor" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Tipo enumerado para los posibles estados de una prenda -->
+    <xs:simpleType name="EstadoPrenda">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DISPONIBLE"/>
+            <xs:enumeration value="AGOTADA"/>
+            <xs:enumeration value="RETIRADA"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

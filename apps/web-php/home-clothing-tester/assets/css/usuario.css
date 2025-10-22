@@ -1,0 +1,288 @@
+/* CARRUSEL */
+.carrusel-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    margin-left: 30px;
+}
+
+.carrusel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px;
+    scrollbar-width: none;
+}
+
+.carrusel::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 320px;
+    background: black;
+    border: 2px solid orange;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(240, 209, 4, 0.947);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.card img {
+    height: 180px;
+    object-fit: contain;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.card-text {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.card-text h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: orange;
+}
+
+.card-text p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: #f5c518;
+}
+
+.flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgb(144, 76, 3);
+    color: white;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px;
+    z-index: 2;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(246, 245, 245, 0.2);
+    transition: all 0.3s ease;
+}
+
+.flecha:hover {
+    background-color: #f9a830;
+    color: black;
+    transform: scale(1.2) rotate(5deg);
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.8);
+    text-shadow: 0 0 5px white;
+}
+
+.flecha.izquierda {
+    left: 0px;
+}
+
+.flecha.derecha {
+    right: 0px;
+}
+
+/* Botones favoritos */
+button.agregar-btn {
+    border: none;
+    font-size: 1.4rem;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.2rem;
+    color: orange;
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+button.agregar-btn:hover {
+    color: gold;
+    transform: scale(1.2);
+}
+
+button.eliminar-btn {
+    border: none;
+    font-size: 1.4rem;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.2rem;
+    color: red;
+    transition: transform 0.2s ease;
+}
+
+button.eliminar-btn:hover {
+    transform: scale(1.2);
+}
+
+/* CONTENEDOR PRINCIPAL DEL PROBADOR */
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    margin: 2rem;
+    padding: 1rem;
+    background: rgba(150, 60, 0, 0.85);
+    border-radius: 20px;
+    color: #fff;
+}
+
+.video-container video {
+    width: 480px;
+    height: 360px;
+    border-radius: 20px;
+    background: #000;
+}
+
+.panel-control {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.panel-control h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: yellow;
+    text-shadow: 1px 1px 2px black;
+}
+
+label,
+select {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: rgb(255, 140, 0);
+    background-color: #000;
+}
+
+select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.preview img {
+    margin-top: 1rem;
+    width: 150px;
+    border: 3px solid orange;
+    border-radius: 10px;
+    background-color: black;
+}
+
+.prenda-preview {
+    display: none;
+    max-width: 200px;
+    background-color: transparent;
+}
+
+.acciones {
+    margin-top: 1rem;
+}
+
+.acciones button {
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    background-color: gold;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Prueba Virtual Usuario en index.php */
+.virtual-section {
+    flex: 0 0 auto;
+    width: 220px;
+    display: flex;
+    justify-content: right;
+    margin: 5rem 5rem;
+}
+
+.prueba-virtual-link {
+    display: block;
+    width: fit-content;
+}
+
+.prueba-virtual-link:hover #pruebaVirtual {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+}
+
+#pruebaVirtual {
+    width: 250px;
+    height: 400px;
+    padding: 1rem;
+    background-color: black;
+    opacity: 0.8;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#pruebaVirtual h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #e68b02;
+}
+
+#pruebaVirtual img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.3);
+}
+
+#pruebaVirtual p {
+    margin-top: 20px;
+    color: #e68b02;
+    text-align: center;
+    padding: 1px;
+    font-weight: 500;
+    text-shadow: 0 0 5px rgba(248, 239, 4, 0.975);
+}
+
+#pruebaVirtual img:hover {
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+}
+
+.mensaje-registro {
+    margin-top: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mensaje-registro.exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mensaje-registro.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.oculto {
+    display: none;
+}
