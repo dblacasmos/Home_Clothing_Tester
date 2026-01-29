@@ -1,18 +1,18 @@
 # 🧥 Home Clothing Tester
 [🇬🇧 English](./README.md) | [🇪🇸 Spanish](./README.es.md)
 
-Home Clothing Tester is a web application that allows users to **virtually try on clothes using their camera**, select favorite garments, and manage their accounts.  
+Home Clothing Tester is a web application that allows users to **preview clothing items using their webcam**, select favorite garments, and manage their accounts.
 This README covers both its functionality and deployment in a Windows environment using **Docker** and **PowerShell**.
 
 ---
 
 ## 📦 Technologies Used
 
-- **Frontend:** HTML, CSS, JS (Vanilla), TensorFlow.js, MediaPipe, Three.js  
-- **Backend:** Java (Spring Boot)  
-- **Database / Backend Integration:** MySQL 8 / React  
-- **Dashboard:** Streamlit  
-- **Containers:** Docker + Docker Compose  
+- **Frontend:** HTML, CSS, JavaScript (Vanilla)
+- **Backend:** Java (Spring Boot), PHP 8.2
+- **Database / Backend Integration:** MySQL 8
+- **Dashboard:** Streamlit
+- **Containers:** Docker + Docker Compose
 - **Automation:** PowerShell + WinGet (Windows 10/11)
 
 ---
@@ -21,19 +21,19 @@ This README covers both its functionality and deployment in a Windows environmen
 
 ### 🔹 Web Functionality
 
-- Try on clothes virtually using your camera.  
-- User authentication system.  
-- Favorites management system.  
-- Separate dashboards for users and administrators.  
+- Camera preview feature for viewing garment images (experimental, non-adaptive).
+- User authentication system.
+- Favorites management system.
+- Separate dashboards for users and administrators.
 - Scripts for verifying paths, images, and dynamic product loading.
 
 ### 🔹 Main Components
 
-- `index.php`: Homepage with product listings.  
-- `login.php + form_login.php`: User authentication.  
-- `prueba_virtual.php`: Virtual fitting room (TensorFlow.js).  
-- `agregar_favoritos.php`: Manage favorite items.  
-- `cambiar_estado_usuario.php`: Admin tool for managing user states.  
+- `index.php`: Homepage with product listings.
+- `login.php + form_login.php`: User authentication.
+- `prueba_virtual.php`: Camera preview for viewing garments (non-adaptive).
+- `agregar_favoritos.php`: Manage favorite items.
+- `cambiar_estado_usuario.php`: Admin tool for managing user states.
 - CSS files (`main.css`, `usuario.css`, `admin.css`) and JS files (`script.js`, `probador_virtual.js`).
 
 ---
@@ -186,8 +186,8 @@ This script will:
 
 ## 📋 Credits
 
-- Demo & Development: **David Blanco**  
-- Java Framework: Spring Boot  
-- Frontend JS: TensorFlow.js, MediaPipe, Three.js
+- Demo & Development: **David Blanco**
+- Java Framework: Spring Boot
+- PHP with Apache for web frontend
 
 ---

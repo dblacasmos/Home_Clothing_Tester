@@ -1,15 +1,15 @@
 # 🧥 Home Clothing Tester
 [🇪🇸 Español](./README.es.md) | [🇬🇧 English](./README.md)
 
-Home Clothing Tester es una aplicación web que permite a los usuarios probarse ropa virtualmente mediante el uso de su cámara, seleccionar prendas favoritas y gestionar su cuenta. Este README cubre tanto su funcionalidad como su despliegue en entorno Windows usando Docker y PowerShell.
+Home Clothing Tester es una aplicación web que permite a los usuarios visualizar prendas usando su webcam, seleccionar prendas favoritas y gestionar su cuenta. Este README cubre tanto su funcionalidad como su despliegue en entorno Windows usando Docker y PowerShell.
 
 ---
 
 ## 📦 Tecnologías Usadas
 
-- **Frontend**: HTML, CSS, JS (Vanilla), TensorFlow.js, MediaPipe, Three.js
-- **Backend**: Java (Spring Boot)
-- **MySql 8/Backend**: React
+- **Frontend**: HTML, CSS, JavaScript (Vanilla)
+- **Backend**: Java (Spring Boot), PHP 8.2
+- **Base de datos**: MySQL 8
 - **Dashboard**: Streamlit
 - **Contenedores**: Docker + Docker Compose
 - **Automatización**: PowerShell + WinGet (Windows 10/11)
@@ -20,7 +20,7 @@ Home Clothing Tester es una aplicación web que permite a los usuarios probarse 
 
 ### 🔹 Funcionalidad Web
 
-- Probar ropa virtualmente usando la cámara.
+- Vista previa de cámara para visualizar prendas (experimental, no adaptativa).
 - Autenticación de usuarios.
 - Sistema de favoritos.
 - Paneles diferenciados para usuarios y administradores.
@@ -30,7 +30,7 @@ Home Clothing Tester es una aplicación web que permite a los usuarios probarse 
 
 - `index.php`: Página de inicio con productos.
 - `login.php + form_login.php`: Autenticación de usuarios.
-- `prueba_virtual.php`: Prueba de ropa en cámara (TensorFlow.js).
+- `prueba_virtual.php`: Vista previa de cámara para ver prendas (no adaptativa).
 - `agregar_favoritos.php`: Gestión de favoritos.
 - `cambiar_estado_usuario.php`: Gestión de estado de usuarios por admin.
 - Archivos CSS (`main.css`, `usuario.css`, `admin.css`) y JS (`script.js`, `probador_virtual.js`).
@@ -184,7 +184,7 @@ Este script:
 
 - Demo y desarrollo: **David Blanco**
 - Framework Java: Spring Boot
-- Frontend JS: TensorFlow.js, MediaPipe, Three.js
+- PHP con Apache para frontend web
 
 ---
 

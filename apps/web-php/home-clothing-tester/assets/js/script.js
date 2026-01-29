@@ -33,26 +33,63 @@ document.addEventListener("DOMContentLoaded", function () {
   // SIDEBAR TOGGLE (menú lateral)
   const menuToggleBtn = document.getElementById("menuToggleBtn"); // Botón que abre/cierra el menú lateral
   const sidebarMenu = document.getElementById("sidebarMenu");     // Menú lateral
-  const toggleIcon = document.getElementById("toggleIcon");       // Icono del botón
+  const toggleIcon = document.getElementById("toggleIcon");       // Icono del menú
+
+  // Ensure toggle icon is always visible - handle potential image load errors
+  if (toggleIcon) {
+    // If image fails to load, use a text fallback
+    toggleIcon.addEventListener("error", function() {
+      console.warn("Menu icon failed to load, using fallback");
+      this.style.display = "none";
+      // Create text fallback
+      if (!menuToggleBtn.querySelector(".icon-fallback")) {
+        const fallback = document.createElement("span");
+        fallback.className = "icon-fallback";
+        fallback.textContent = "☰";
+        fallback.style.cssText = "font-size: 24px; color: #fff;";
+        menuToggleBtn.appendChild(fallback);
+      }
+    });
+
+    // Force visibility on load
+    toggleIcon.style.display = "block";
+    toggleIcon.style.visibility = "visible";
+    toggleIcon.style.opacity = "1";
+  }
 
   // Si existen los elementos necesarios
-  if (menuToggleBtn && sidebarMenu && toggleIcon) {
+  if (menuToggleBtn && sidebarMenu) {
 
     // Cuando se hace clic en el botón del menú
-    menuToggleBtn.addEventListener("click", () => {
-      const isOpen = sidebarMenu.classList.toggle("active");
+    menuToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent event bubbling
+      sidebarMenu.classList.toggle("active");
+      // Toggle class on button for CSS-based visual feedback (icon rotation)
+      menuToggleBtn.classList.toggle("menu-open");
 
-      // Cambia el ícono (en este caso yo cojo el mismo)
-      toggleIcon.src = isOpen
-        ? "/home-clothing-tester/assets/images/icons/Nav-Menu.png"
-        : "/home-clothing-tester/assets/images/icons/Nav-Menu.png";
+      // Ensure icon remains visible after click
+      if (toggleIcon) {
+        toggleIcon.style.display = "block";
+        toggleIcon.style.visibility = "visible";
+        toggleIcon.style.opacity = "1";
+      }
     });
 
     // Si se presiona ESC y el menú está abierto, se cierra
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && sidebarMenu.classList.contains("active")) {
         sidebarMenu.classList.remove("active");
-        toggleIcon.src = "/home-clothing-tester/assets/images/icons/Nav-Menu.png";
+        menuToggleBtn.classList.remove("menu-open");
+      }
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", (e) => {
+      if (sidebarMenu.classList.contains("active") &&
+          !sidebarMenu.contains(e.target) &&
+          !menuToggleBtn.contains(e.target)) {
+        sidebarMenu.classList.remove("active");
+        menuToggleBtn.classList.remove("menu-open");
       }
     });
   }

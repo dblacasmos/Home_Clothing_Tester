@@ -9,7 +9,7 @@
     <?php endif; ?>
 
     <!-- Este formulario envía los datos al archivo login.php, que procesa la autenticación. -->
-    <form method="POST" action="../../controllers/comunes/login.php">
+    <form method="POST" action="/controllers/comunes/login.php">
         <label for="correo_usuario">Correo Usuario:</label>
         <input type="email" name="correo_usuario" id="correo_usuario" required placeholder="Correo Usuario">
 

@@ -1,3 +1,4 @@
+import os
 import socket
 import time
 import pandas as pd
@@ -19,6 +20,7 @@ def wait_for_mysql(host, port, timeout=30):
     return False
 
 
+# Esperar a MySQL antes de continuar
 if not wait_for_mysql("mysql", 3306):
     st.error("No se pudo conectar a MySQL. Asegúrate de que el servicio esté activo.")
     st.stop()
@@ -26,13 +28,25 @@ if not wait_for_mysql("mysql", 3306):
 
 @st.cache_resource
 def get_engine():
-    return create_engine("mysql+pymysql://root:@mysql:3306/home_clothing_tester")
+    host = os.getenv("DB_HOST", "mysql")
+    port = os.getenv("DB_PORT", "3306")
+    db   = os.getenv("DB_NAME", "home_clothing_tester")
+    user = os.getenv("DB_USER", "root")
+    pwd  = os.getenv("DB_PASS", "")
+
+    if not pwd:
+        raise RuntimeError("DB password missing: expected env var DB_PASS")
+
+    return create_engine(
+        f"mysql+pymysql://{user}:{pwd}@{host}:{port}/{db}",
+        pool_pre_ping=True
+    )
 
 
 def main():
     engine = get_engine()
 
-    # Verificamos si se puede hacer una conexión
+    # Verificar conexión
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
@@ -41,13 +55,12 @@ def main():
         st.stop()
 
     # Mostrar catálogo disponible
+    st.header("Prendas Disponibles")
     query_catalogo = "SELECT * FROM view_prendas_disponibles"
     df_catalogo = pd.read_sql(query_catalogo, engine)
-
-    st.header("Prendas Disponibles")
     st.dataframe(df_catalogo)
 
-    # Mostrar ventas por categoría con gráfico
+    # Mostrar ventas por categoría
     st.header("Ventas por Categoría")
     query_ventas = "SELECT * FROM view_ventas_por_categoria"
     ventas_df = pd.read_sql(query_ventas, engine)
@@ -55,7 +68,6 @@ def main():
     if ventas_df.empty:
         st.warning("No hay datos de ventas por categoría para mostrar.")
     else:
-        # Gráfico de barras con matplotlib
         fig, ax = plt.subplots(figsize=(10, 6))
         categorias = ventas_df['NOMBRE_CATEGORIA']
         ingresos = ventas_df['INGRESOS_TOTALES']
@@ -68,5 +80,5 @@ def main():
         st.pyplot(fig)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

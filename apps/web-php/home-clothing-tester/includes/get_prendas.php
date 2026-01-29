@@ -1,13 +1,15 @@
 <?php
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../config/conexion.php';
+
 
 
 //  Consulta SQL: obtener prendas del catálogo
+// Note: Image paths use absolute URL from document root
 $sql = "SELECT
     ID_PRENDA AS id,
     NOMBRE AS nombre,
     PRECIO AS precio,
-    CONCAT('/home-clothing-tester/assets/images/prendas/', ID_PRENDA, '.jpg') AS imagen
+    CONCAT('/assets/images/prendas/', ID_PRENDA, '.jpg') AS imagen
 FROM view_catalogo_prendas
 LIMIT 10";
 

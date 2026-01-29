@@ -152,9 +152,17 @@ button.eliminar-btn:hover {
 
 .panel-control h1 {
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     color: yellow;
     text-shadow: 1px 1px 2px black;
+}
+
+.panel-control .disclaimer {
+    font-size: 0.85rem;
+    color: #ffcc00;
+    font-style: italic;
+    margin-bottom: 1rem;
+    opacity: 0.9;
 }
 
 label,

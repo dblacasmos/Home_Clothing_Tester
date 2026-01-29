@@ -1,28 +1,30 @@
 <?php
 session_start();
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 if (!isset($_SESSION['id_usuario']) || $_SESSION['rol'] !== 'usuario') {
-    header("Location: ../../views/comunes/index.php");
+    header("Location: /");
     exit;
 }
 
-// Elimina un favorito si llega un id válido por POST
+// Security: verify the favorite belongs to the logged-in user
 if (isset($_POST['id_favorito'])) {
     $id_favorito = intval($_POST['id_favorito']);
+    $id_usuario = $_SESSION['id_usuario'];
 
-    $stmt = $conn->prepare("DELETE FROM favorito WHERE ID_FAVORITO = ?");
-    $stmt->bind_param("i", $id_favorito);
+    // Only delete if the favorite belongs to this user
+    $stmt = $conn->prepare("DELETE FROM favorito WHERE ID_FAVORITO = ? AND ID_USUARIO = ?");
+    $stmt->bind_param("ii", $id_favorito, $id_usuario);
 
-    // Si se elimina correctamente, redirige
     if ($stmt->execute()) {
-        header("Location: favoritos.php");
+        header("Location: /views/comunes/catalogo_prendas.php");
         exit;
     } else {
-        // // Si hay error, lo muestra
-        die("Error al eliminar el favorito: " . $conn->error);
+        error_log("Error deleting favorite: " . $conn->error);
+        header("Location: /views/comunes/catalogo_prendas.php");
+        exit;
     }
 } else {
-    header("Location: ../../views/user/favoritos.php");
+    header("Location: /views/user/favoritos.php");
     exit;
 }

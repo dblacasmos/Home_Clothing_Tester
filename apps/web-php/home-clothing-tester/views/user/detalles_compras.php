@@ -1,14 +1,13 @@
 <?php
 session_start();
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 // Solo permitir acceso si está logueado y tiene rol "usuario"
 if (!isset($_SESSION['id_usuario']) || $_SESSION['rol'] !== 'usuario') {
-    header("Location: ../comunes/index.php");
+    header("Location: /");
     exit;
 }
-
-include '../../includes/header.php'; ?>
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -16,16 +15,17 @@ include '../../includes/header.php'; ?>
 <head>
     <meta charset="UTF-8">
     <title>Detalles de Compra</title>
-    <link rel="icon" href="../../assets/images/icons/Favicon.png" type="image/png">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/usuario.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link rel="icon" href="/assets/images/icons/Favicon.png" type="image/png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/usuario.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
+    <?php include __DIR__ . '/../../includes/header.php'; ?>
 
     <div id="sidebarMenu" class="sidebar-menu">
-        <?php include '../../includes/nav/nav_user.php'; ?>
+        <?php include __DIR__ . '/../../includes/nav/nav_user.php'; ?>
     </div>
 
     <?php
@@ -37,8 +37,7 @@ include '../../includes/header.php'; ?>
              dc.PRECIO_UNIDAD,
              dc.SUBTOTAL,
              p.NOMBRE AS NOMBRE_PRENDA,
-             CONCAT('/home-clothing-tester/assets/images/prendas/',
-             p.ID_PRENDA, '.jpg') AS Imagen
+             CONCAT('/assets/images/prendas/', p.ID_PRENDA, '.jpg') AS Imagen
         FROM detallecompra dc
         INNER JOIN compra c ON dc.ID_COMPRA = c.ID_COMPRA
         INNER JOIN prenda p ON dc.ID_PRENDA = p.ID_PRENDA
@@ -47,7 +46,8 @@ include '../../includes/header.php'; ?>
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
-        die("Error en prepare: " . $conn->error);
+        error_log("Error en prepare: " . $conn->error);
+        die("Error al cargar detalles de compra.");
     }
 
     $stmt->bind_param("i", $id_usuario);
@@ -75,18 +75,18 @@ include '../../includes/header.php'; ?>
                         <td><?= htmlspecialchars($row['DETALLES_COMPRA']) ?></td>
                         <td><?= htmlspecialchars($row['NOMBRE_PRENDA']) ?></td>
                         <td><?= htmlspecialchars($row['CANTIDAD']) ?></td>
-                        <td><?= number_format($row['PRECIO_UNIDAD'], 2) ?> €</td>
-                        <td><?= number_format($row['SUBTOTAL'], 2) ?> €</td>
-                        <td><img src="<?= $row['Imagen'] ?>" alt="Imagen de <?= $row['NOMBRE_PRENDA'] ?>" width="60"></td>
+                        <td><?= number_format($row['PRECIO_UNIDAD'], 2) ?> &euro;</td>
+                        <td><?= number_format($row['SUBTOTAL'], 2) ?> &euro;</td>
+                        <td><img src="<?= htmlspecialchars($row['Imagen']) ?>" alt="Imagen de <?= htmlspecialchars($row['NOMBRE_PRENDA']) ?>" width="60"></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </main>
 
-    <?php include '../../includes/footer.php'; ?>
+    <?php include __DIR__ . '/../../includes/footer.php'; ?>
 
-    <script src="../../assets/js/script.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>

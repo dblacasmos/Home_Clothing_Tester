@@ -1,39 +1,83 @@
-services:
-  mysql:
-    build: .
-    container_name: mysql
-    restart: always
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: home_clothing_tester
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d
+# =============================================================================
+# Home Clothing Tester - Docker Compose Configuration
+# Optimized for Windows + Docker Desktop + WSL2
+# =============================================================================
+#
+# HEALTHCHECK STRATEGY:
+# Each healthcheck uses tools GUARANTEED to be available in that container:
+# - MySQL: mysqladmin (always in mysql image)
+# - Backend: bash TCP check via /dev/tcp (works in JDK images without wget/curl)
+# - Streamlit: Python urllib (Python is always present)
+# - phpMyAdmin: curl (available in phpmyadmin image)
+# - web-php: curl (available in Apache/PHP images)
+#
+# =============================================================================
 
+services:
+  # ---------------------------------------------------------------------------
+  # MySQL Database
+  # ---------------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: home_clothing_tester
+      MYSQL_LOG_BIN: ""
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d:ro
     ports:
       - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --skip-log-bin
 
+  # ---------------------------------------------------------------------------
+  # Spring Boot Backend API
+  # ---------------------------------------------------------------------------
   backend:
     build:
       context: ./apps/backend-api
       dockerfile: Dockerfile
     container_name: backend-api
-    restart: always
+    restart: unless-stopped
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/home_clothing_tester?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/home_clothing_tester?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=10000&socketTimeout=30000
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      # Bash TCP check - works without wget/curl
+      # /dev/tcp is a bash built-in that opens TCP connections
+      test: ["CMD-SHELL", "timeout 5 bash -c '</dev/tcp/localhost/8080' 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 60s
 
+  # ---------------------------------------------------------------------------
+  # Streamlit Dashboard
+  # ---------------------------------------------------------------------------
   streamlit:
     build:
       context: ./apps/streamlit
       dockerfile: Dockerfile
     container_name: streamlit
-    depends_on:
-      - mysql
+    restart: unless-stopped
     ports:
       - "8501:8501"
     environment:
@@ -41,21 +85,73 @@ services:
       DB_PORT: 3306
       DB_NAME: home_clothing_tester
       DB_USER: root
-      DB_PASS: ""
+      DB_PASS: root
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      # Python HTTP check - guaranteed to work in Python images
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:8501/', timeout=5)\" 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 6
+      start_period: 30s
 
+  # ---------------------------------------------------------------------------
+  # phpMyAdmin
+  # ---------------------------------------------------------------------------
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:5
     container_name: phpmyadmin
-    restart: always
+    restart: unless-stopped
     ports:
       - "8081:80"
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: ""
+      PMA_PASSWORD: root
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost/ > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
 
+  # ---------------------------------------------------------------------------
+  # PHP Web Application
+  # ---------------------------------------------------------------------------
+  web-php:
+    build:
+      context: ./apps/web-php
+      dockerfile: Dockerfile
+    container_name: web-php
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: home_clothing_tester
+      DB_USER: root
+      DB_PASS: root
+      APP_ENV: development
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost/ > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+# =============================================================================
+# Volumes
+# =============================================================================
 volumes:
   mysql_data:
+    driver: local

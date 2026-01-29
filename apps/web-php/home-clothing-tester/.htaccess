@@ -1,0 +1,31 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Security: Deny access to sensitive files (dotfiles)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Deny access to config directory from web
+RewriteRule ^config/ - [F,L]
+
+# Security headers (requires mod_headers - enabled in Dockerfile)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Default charset
+AddDefaultCharset UTF-8
+
+# PHP settings - using php_module (correct for PHP 8.x with Apache)
+# Note: For production, set display_errors to Off
+<IfModule php_module>
+    php_flag display_errors On
+    php_flag log_errors On
+    php_value error_reporting E_ALL
+</IfModule>

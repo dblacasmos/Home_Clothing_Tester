@@ -127,7 +127,7 @@ header {
 
 /* Header Icon del Menu Slidebar */
 .menu-toggle {
-  position: absolute;
+  position: fixed;              /* Fixed positioning - independent stacking context */
   top: 0;
   left: 0;
   height: 70px;
@@ -135,17 +135,42 @@ header {
   background: transparent;
   border: none;
   cursor: pointer;
-  display: flex;
+  display: flex !important;     /* Force flex display */
   align-items: center;
   justify-content: center;
-  z-index: 4000;
+  z-index: 9999;                /* Highest z-index - always on top of everything */
+  pointer-events: auto;         /* Ensure button is always clickable */
 }
 
 #toggleIcon {
   height: 40px;
   width: auto;
+  max-width: 40px;              /* Prevent unexpected sizing */
   object-fit: contain;
   transition: transform 0.3s ease;
+  /* Defensive rules - ensure icon is ALWAYS visible */
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none;         /* Clicks pass through to parent button */
+}
+
+/* Visual feedback when menu is open - rotate the icon 90 degrees */
+.menu-toggle.menu-open #toggleIcon {
+  transform: rotate(90deg);
+  /* Maintain visibility during transform */
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure icon visibility in all interactive states */
+.menu-toggle:hover #toggleIcon,
+.menu-toggle:focus #toggleIcon,
+.menu-toggle:active #toggleIcon {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Usuario con correo conectado */

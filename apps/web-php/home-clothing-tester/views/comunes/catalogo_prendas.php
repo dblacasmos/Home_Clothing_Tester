@@ -1,11 +1,9 @@
 <?php
 session_start();
-require_once '../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 
 $id_usuario = $_SESSION['id_usuario'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
-
-include '../../includes/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,21 +12,23 @@ include '../../includes/header.php';
 <head>
     <meta charset="UTF-8">
     <title>Catálogo de Prendas</title>
-    <link rel="icon" href="../../assets/images/icons/Favicon.png" type="image/png">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
-    <link rel="stylesheet" href="../../assets/css/usuario.css">
+    <link rel="icon" href="/assets/images/icons/Favicon.png" type="image/png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/usuario.css">
 </head>
 
 <body>
+    <?php include __DIR__ . '/../../includes/header.php'; ?>
+
     <div id="sidebarMenu" class="sidebar-menu">
         <?php
         if (!isset($rol)) {
-            include '../../includes/nav/nav.php';
+            include __DIR__ . '/../../includes/nav/nav.php';
         } elseif ($rol === 'admin') {
-            include '../../includes/nav/nav_admin.php';
+            include __DIR__ . '/../../includes/nav/nav_admin.php';
         } elseif ($rol === 'usuario') {
-            include '../../includes/nav/nav_user.php';
+            include __DIR__ . '/../../includes/nav/nav_user.php';
         }
         ?>
     </div>
@@ -36,11 +36,11 @@ include '../../includes/header.php';
     <?php
     if ($rol === 'admin') {
         $sql = "SELECT ID_PRENDA AS NUM_PRENDA, NOMBRE, DESCRIPCION, PRECIO, TALLA, COLOR, STOCKDISPONIBLE, ESTADO_PRENDA, NOMBRE_CATEGORIA, CREADO_POR,
-                CONCAT('/home-clothing-tester/assets/images/prendas/', ID_PRENDA, '.jpg') AS Imagen
+                CONCAT('/assets/images/prendas/', ID_PRENDA, '.jpg') AS Imagen
                 FROM view_catalogo_prendas";
     } else {
         $sql = "SELECT ID_PRENDA AS NUM_PRENDA, NOMBRE, DESCRIPCION, PRECIO, TALLA, COLOR, NOMBRE_CATEGORIA,
-                CONCAT('/home-clothing-tester/assets/images/prendas/', ID_PRENDA, '.jpg') AS Imagen
+                CONCAT('/assets/images/prendas/', ID_PRENDA, '.jpg') AS Imagen
                 FROM view_catalogo_prendas";
     }
 
@@ -98,7 +98,7 @@ include '../../includes/header.php';
                         <td><?= htmlspecialchars($row['NUM_PRENDA']) ?></td>
                         <td><?= htmlspecialchars($row['NOMBRE']) ?></td>
                         <td><?= htmlspecialchars($row['DESCRIPCION']) ?></td>
-                        <td><?= htmlspecialchars($row['PRECIO']) ?> €</td>
+                        <td><?= htmlspecialchars($row['PRECIO']) ?> &euro;</td>
                         <td><?= htmlspecialchars($row['TALLA']) ?></td>
                         <td><?= htmlspecialchars($row['COLOR']) ?></td>
                         <?php if ($rol === 'admin') : ?>
@@ -109,18 +109,18 @@ include '../../includes/header.php';
                         <?php if ($rol === 'admin') : ?>
                             <td><?= htmlspecialchars($row['CREADO_POR']) ?></td>
                         <?php endif; ?>
-                        <td><img src="<?= $row['Imagen'] ?>" alt="Imagen de <?= htmlspecialchars($row['NOMBRE']) ?>" width="60"></td>
+                        <td><img src="<?= htmlspecialchars($row['Imagen']) ?>" alt="Imagen de <?= htmlspecialchars($row['NOMBRE']) ?>" width="60"></td>
                         <?php if ($rol === 'usuario') : ?>
                             <td>
                                 <?php if ($ya_es_favorito): ?>
-                                    <form action="../../controllers/user/eliminar_favorito.php" method="POST" onsubmit="return confirm('¿Eliminar de favoritos?');">
+                                    <form action="/controllers/user/eliminar_favorito.php" method="POST" onsubmit="return confirm('¿Eliminar de favoritos?');">
                                         <input type="hidden" name="id_favorito" value="<?= htmlspecialchars($id_favorito) ?>">
-                                        <button type="submit" class="eliminar-btn" title="Quitar de favoritos">★</button>
+                                        <button type="submit" class="eliminar-btn" title="Quitar de favoritos">&#9733;</button>
                                     </form>
                                 <?php else: ?>
-                                    <form action="../../controllers/user/agregar_favorito.php" method="POST" onsubmit="return confirm('¿Agregar a favoritos?');">
+                                    <form action="/controllers/user/agregar_favorito.php" method="POST" onsubmit="return confirm('¿Agregar a favoritos?');">
                                         <input type="hidden" name="id_prenda" value="<?= htmlspecialchars($id_prenda) ?>">
-                                        <button type="submit" class="agregar-btn" title="Agregar a favoritos">☆</button>
+                                        <button type="submit" class="agregar-btn" title="Agregar a favoritos">&#9734;</button>
                                     </form>
                                 <?php endif; ?>
                             </td>
@@ -131,8 +131,8 @@ include '../../includes/header.php';
         </table>
     </main>
 
-    <?php include '../../includes/footer.php'; ?>
-    <script src="../../assets/js/script.js"></script>
+    <?php include __DIR__ . '/../../includes/footer.php'; ?>
+    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>
