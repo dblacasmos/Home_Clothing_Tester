@@ -1,190 +1,121 @@
 # 🧥 Home Clothing Tester
 [🇪🇸 Español](./README.es.md) | [🇬🇧 English](./README.md)
 
-Home Clothing Tester es una aplicación web que permite a los usuarios visualizar prendas usando su webcam, seleccionar prendas favoritas y gestionar su cuenta. Este README cubre tanto su funcionalidad como su despliegue en entorno Windows usando Docker y PowerShell.
+Home Clothing Tester es una **aplicación web full-stack** orientada a e-commerce que permite explorar un catálogo de prendas, utilizar **camera preview no adaptativo**, gestionar favoritos y cuentas de usuario, y operar el sistema mediante panel de administración y dashboard de métricas.
+
+El proyecto está diseñado como un **sistema desplegable y reproducible** en entorno Windows usando Docker y PowerShell.
 
 ---
 
 ## 📦 Tecnologías Usadas
 
-- **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Backend**: Java (Spring Boot), PHP 8.2
-- **Base de datos**: MySQL 8
-- **Dashboard**: Streamlit
-- **Contenedores**: Docker + Docker Compose
-- **Automatización**: PowerShell + WinGet (Windows 10/11)
+### Web / Producto
+- PHP (MVC)
+- HTML, CSS, JavaScript (Vanilla)
+- Camera Preview vía Web APIs (no adaptativo)
+
+### Backend & Datos
+- Java (Spring Boot)
+- MySQL 8
+
+### Observabilidad
+- Streamlit (Dashboard)
+
+### Infraestructura
+- Docker & Docker Compose
+- PowerShell + WinGet (Windows 10/11)
 
 ---
 
-## 🧪 Funcionalidades Destacadas
+## 🧪 Funcionalidades Principales
 
-### 🔹 Funcionalidad Web
-
-- Vista previa de cámara para visualizar prendas (experimental, no adaptativa).
+### 🔹 Experiencia de Usuario
+- Exploración de catálogo de prendas.
+- Camera preview integrada (visualización en tiempo real, no adaptativa).
 - Autenticación de usuarios.
-- Sistema de favoritos.
-- Paneles diferenciados para usuarios y administradores.
-- Scripts para verificación de rutas, imágenes y carga dinámica de productos.
+- Gestión de favoritos persistentes.
+- Flujos diferenciados por rol (usuario / administrador).
 
-### 🔹 Componentes Principales
-
-- `index.php`: Página de inicio con productos.
-- `login.php + form_login.php`: Autenticación de usuarios.
-- `prueba_virtual.php`: Vista previa de cámara para ver prendas (no adaptativa).
-- `agregar_favoritos.php`: Gestión de favoritos.
-- `cambiar_estado_usuario.php`: Gestión de estado de usuarios por admin.
-- Archivos CSS (`main.css`, `usuario.css`, `admin.css`) y JS (`script.js`, `probador_virtual.js`).
+### 🔹 Operación del Sistema
+- Panel de administración de usuarios.
+- Control de estado (activo / bloqueado).
+- Métricas básicas de uso y ventas.
+- Dashboard de reporting con Streamlit.
+- Scripts de verificación de integridad tras despliegue.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto (resumen)
 
-```
+```placetext
 home-clothing-tester/
 ├── apps/
-│   ├── backend-api/
-│   │   ├── Dockerfile
-│   │   ├── pom.xml
-│   │   └── src/
-│   │       └── main/
-│   │           ├── java/com.homeclothing.api/
-│   │           │   ├── controller/
-│   │           │   ├── dao/
-│   │           │   ├── model/
-│   │           │   └── service/
-│   │           │       └── BackendApiApplication.java
-│   │           └── resources/
-│   │               └── application.yml
-│   └── streamlit/
-│       ├── Dockerfile
-│       ├── requirements.txt
-│       ├── .streamlit/
-│       │   └── secrets.toml
-│       └── app/
-│           ├── __init__.py
-│           └── streamlit-dashboard.py
-├── web-php/
-│   └── home-clothing-tester/
-│       ├── assets/
-│       │   ├── css/
-│       │   ├── js/
-│       │   ├── media/
-│       │   └── images/
-│       │       ├── icons/
-│       │       ├── layout/
-│       │       ├── models/
-│       │       ├── prendas/
-│       │       └── simulaciones/
-│       ├── config/
-│       ├── controllers/
-│       │   ├── admin/
-│       │   ├── comunes/
-│       │   └── user/
-│       ├── includes/
-│       │   ├── nav/
-│       │   │   ├── nav.php
-│       │   │   ├── nav_admin.php
-│       │   │   └── nav_user.php
-│       │   ├── footer.php
-│       │   ├── get_prendas.php
-│       │   ├── header.php
-│       │   └── login_form.php
-│       └── views/
-│           ├── admin/
-│           │   ├── compras.php
-│           │   ├── estadisticas_usuarios.php
-│           │   ├── gasto_usuario.php
-│           │   ├── lista_favoritos_usuarios.php
-│           │   ├── lista_usuarios.php
-│           │   ├── prendas_disponibles.php
-│           │   ├── registros_pruebas_virtuales.php
-│           │   ├── top_ventas_categorias.php
-│           │   ├── top_ventas_prendas.php
-│           │   └── usuarios_bloqueados.php
-│           ├── comunes/
-│           │   ├── catalogo_prendas.php
-│           │   ├── comentarios.php
-│           │   ├── historial_compras.php
-│           │   └── index.php
-│           └── user/
-│               ├── detalles_compras.php
-│               ├── favoritos.php
-│               └── prueba_virtual.php
-├── database/
-│   ├── phpmyadmin/
-│   ├── 00-disable-host-cache.sql
-│   ├── 01-db_home_clothing_tester.sql
-│   └── Dockerfile
-├── docs/
-│   ├── data-models/
-│   │   ├── catalogo.xsd
-│   │   └── catalogo_sample.json
-│   └── uml/
-│       ├── DiagramClass.png
-│       ├── DiagramE-R.png
-│       └── DiagramUse.png
-├── scripts/
-│   ├── reset-and-rebuild.ps1
-│   ├── setup_and_run.ps1
+│ ├── backend-api/ # API Java (Spring Boot)
+│ └── streamlit/ # Dashboard
+├── web-php/ # Aplicación web PHP (MVC)
+├── database/ # Scripts de inicialización MySQL
+├── docs/ # Diagramas UML y modelos
+├── scripts/ # PowerShell (deploy)
 ├── docker-compose.yml
-├── Dockerfile
-├── .gitignore
-├── home-clothing-tester.iml
-└── pom.xml
+└── README.md
+```
+
 ---
 
-## 🚀 Cómo Ejecutarlo (Windows 10/11)
+## 🚀 Ejecución en Windows (10/11)
 
 ### Requisitos
+- Windows con **WinGet** instalado.
+- Ejecutar PowerShell como **Administrador**.
 
-- Tener Windows con [WinGet](https://learn.microsoft.com/es-es/windows/package-manager/) instalado.
-- Ejecutar como **Administrador**.
+### Pasos
+```powershell
+cd scripts
+.\setup_and_run.ps1
+```
 
-### Paso a Paso
+El script:
 
-1. Abre Intellij IDEA
-2. Corre el script:
-- scripts
-    setup_and_run.ps1
-
-Este script:
-
-- Instala Docker Desktop (si no está).
-- Espera que Docker esté corriendo.
-- Verifica Docker Compose.
-- Lanza los servicios MySQL, API Java y Streamlit en contenedores.
-
-### Puertos por Defecto
-
-- 🛢 MySQL: `localhost:3306`
-- 🌐 API (Spring Boot): `localhost:8080`
-- 📊 Dashboard (Streamlit): `localhost:8501`
+- Verifica/instala Docker Desktop.
+- Espera a que Docker esté operativo.
+- Detecta Docker Compose.
+- Levanta todos los servicios en contenedores.
 
 ---
 
-## 🧰 Docker Compose
-
-`docker-compose.yml` contiene:
-
-- **MySQL** con volumen persistente y script de inicialización.
-- **Backend API** en Java con conexión a la base.
-- **Streamlit Dashboard** conectado a MySQL.
+## 🌐 Servicios y Puertos
+- 🌐 Web PHP: http://localhost:8082
+- 🔧 API Spring Boot: http://localhost:8080
+- 📊 Dashboard Streamlit: http://localhost:8501
+- 🛢 MySQL: localhost:3307
+- 🗄 phpMyAdmin: http://localhost:8081
 
 ---
 
 ## 🧪 Scripts de Verificación
+Scripts utilitarios para asegurar integridad tras despliegue:
+- controllers/admin/comprobar_rutas.php
+Verifica la existencia de rutas críticas del proyecto.
+- scripts/setup_and_run.ps1
+Arranque reproducible del sistema en Windows.
 
-- `comprobar_rutas.php`: Verifica rutas de imágenes.
-- `comprobar_imagenes.php`: Verifica carga de imágenes.
-- `get_prendas.php`: Muestra prendas filtradas dinámicamente.
+Ejemplo de salida esperada:
+```makefile
+Resumen: OK=18 | ERRORES=0
+```
 
 ---
+
+## 📐 Documentación Técnica
+- Diagramas de casos de uso.
+- Modelo de dominio.
+- Modelo entidad–relación (MySQL).
+
+Ubicación:
+```bash
+docs/uml/
+```
 
 ## 📋 Créditos
-
-- Demo y desarrollo: **David Blanco**
-- Framework Java: Spring Boot
-- PHP con Apache para frontend web
-
----
-
+Proyecto y desarrollo: David Blanco
+Stack principal: PHP · Java · MySQL · Docker · Streamlit
